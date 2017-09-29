@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  mysql-api:
+    image: mysql:5.7
+    container_name: dz-api-mysql
+    command: --sql-mode="NO_AUTO_CREATE_USER"
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/
+
+  php-api:
+    build: .
+    image: dzapi:1.0
+    container_name: dz-api
+    ports:
+      - 80:80
+    volumes:
+      - ./app:/var/www/app

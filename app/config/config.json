@@ -1,0 +1,14 @@
+{
+  "db": {
+    "dsn": "mysql:host=mysql-api;dbname=test;charset=UTF8",
+    "username": "root",
+    "password": "root"
+  },
+  "entities": {
+    "user": ["get"],
+    "track": ["get"],
+    "favorite": ["get", "post", "delete"]
+  },
+  "output": "json",
+  "debug": true
+}
