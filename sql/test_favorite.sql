@@ -29,6 +29,7 @@ CREATE TABLE `favorite` (
   `id_user` int(11) NOT NULL,
   `id_track` int(11) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `id_user_track` (`id_user`, `id_track`),
   KEY `id_user_idx` (`id_user`),
   KEY `id_track_idx` (`id_track`),
   CONSTRAINT `id_track` FOREIGN KEY (`id_track`) REFERENCES `track` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
