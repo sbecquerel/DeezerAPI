@@ -30,7 +30,7 @@ Example with a format named **xml**: http://localhost/user/xml or http://localho
 
 ### Add new objects
 Procedure to add a new object *obj*
-* Create a table named *obj*
+* Create a table named *obj* with a primary key named **id**
 * Add *obj* in the configuration file, in *entities* array and set access: get, post (creation), put (update) and delete.
 * Create class *Obj* (optional) in *class/entity* directory, extending *entity* class. Set get, post (optional), put (optional) and delete (optional) functions.
 
