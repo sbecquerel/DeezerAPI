@@ -9,6 +9,5 @@
     "track": ["get"],
     "favorite": ["get", "post", "delete"]
   },
-  "output": "json",
   "debug": true
 }

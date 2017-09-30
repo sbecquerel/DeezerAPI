@@ -93,14 +93,6 @@ class Config {
   }
 
   /**
-   * Return output format (json)
-   * @return string
-   */
-  public function getOutput() {
-    return $this->conf['output'];
-  }
-
-  /**
    * Is app in debug mode?
    * @return Boolean
    */

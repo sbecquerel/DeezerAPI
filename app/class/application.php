@@ -16,10 +16,21 @@ class Application {
     if ( ! isset($_GET['params'])) {
       throw new \Exception('No parameters found in request');
     }
-    $params = array($_SERVER['REQUEST_METHOD']);
-    $params = array_merge($params, explode('/', $_GET['params']));
-    // Request contructor args: method, entity name and entity id
-    $request = new Request(...$params);
+    $request = new Request;
+    $request->method = $_SERVER['REQUEST_METHOD'];
+    $params = explode('/', $_GET['params']);
+    $request->entityName = $params[0];
+    if (isset($params[1])) {
+      if (is_numeric($params[1])) {
+        $request->entityId = (int) $params[1];
+      } else {
+        error_log(__LINE__);
+        $request->output = $params[1];
+      }
+    }
+    if (isset($params[2])) {
+      $request->output = $params[2];
+    }
     // If POST or PUT request, store data in request object
     if ($request->method === 'POST') {
       $request->data = $_POST;
@@ -27,6 +38,8 @@ class Application {
       parse_str(file_get_contents("php://input"), $putVars);
       $request->data = $putVars;
     }
+    error_log('output = ' . $request->output);
+    error_log(print_r($params, true));
     return $request;
   }
 
@@ -64,10 +77,14 @@ class Application {
       $entity = new $entityClass($conf->getPdo());
       $result = $entity->{$method}($request);
 
-      // Prepare response, get configuration output value to determine 
-      // which response class to instantiate.
-      $responseObj = "\\Api\\Response\\" . ucfirst(strval($conf->getOutput()));
-      $response = new $responseObj($result);
+      // Prepare response
+      // Retrieve output format from request object. Throw exception
+      // if format is not supported
+      $responseClass = "\\Api\\Response\\" . ucfirst($request->output);
+      if ( ! \Api\Autoloader::classExists($responseClass)) {
+        throw new \Exception("Output $request->output not available");
+      }
+      $response = new $responseClass($result);
       
       // Send response
       $response->send();
